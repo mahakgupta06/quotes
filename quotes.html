@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href= "quotes.css">
+</head>
+<body>
+    <div class="container">
+        <div class="inner">
+            <inner class="box">
+                <p class="number">
+                    <img src="twitter.png" alt="tweet" id="tweetme">
+                </p>
+            <div class="text">
+                <p id="quotes" class="quotes "></p>
+                <p id="author" class="author"></p>
+            </div>
+            <label for="" class="button">
+                <p id="newQ">new Quotes</p>
+            </label>
+        </div>
+    </div>
+    <script>
+          const quotes = document.getElementById('quotes');
+          const author = document.getElementById('author');
+          const newQ = document.getElementById('newQ');
+          const tweetme = document.getElementById('tweetme');
+          let realData = "";
+          let quotesData = "";
+
+            const tweetNow = ()=>{
+                let tweetPost =    `https://twitter.com/intent/tweet?text=${quotesData.text} ${quotesData.author}`;
+                window.open(tweetPost);
+
+            };
+
+          const getNewQuotes = () => {
+            let rnum = Math.floor(Math.random()*16);
+            quotesData = realData[rnum];
+            // console.log(realData[rnum].author);
+            quotes.innerText = `${quotesData.text}`;
+            // author.innerText = `${realData[rnum].author}`;
+            quotesData.author == null
+                ? (author.innerText = "unKnown")
+                : (author.innerText = `${quotesData.author}`)
+            // console.log(rnum)
+          };
+
+        const getquotes = async () => {
+        const api = "https://type.fit/api/quotes";
+        try {
+                let data = await fetch(api);
+                realData = await data.json();
+                getNewQuotes();
+                 /*console.log(realData[10].text);
+                 console.log(realData[10].author);*/
+            }catch (error) {}
+        };
+
+        newQ.addEventListener('click', getNewQuotes); 
+        tweetme.addEventListener('click', tweetNow); 
+        getquotes();
+    </script>
+</body>
+</html>
